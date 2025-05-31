@@ -8,15 +8,14 @@ stages:
 build:
   stage: build
   script:
-    - python -m venv venv           # создаём виртуальное окружение
-    - source venv/bin/activate      # активируем (для bash)
     - pip install --upgrade pip
     - pip install -r requirements.txt
 
 test:
   stage: test
   script:
-    - source venv/bin/activate      # активируем окружение
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
     - cd myblog
     - python manage.py test
 
