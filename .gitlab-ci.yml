@@ -14,8 +14,13 @@ build:
 test:
   stage: test
   script:
-    - echo "Running tests..."
+    - echo "Listing files in current directory:"
+    - ls -la
+    - echo "Trying to change directory to myblog:"
     - cd myblog
+    - echo "Listing files in myblog directory:"
+    - ls -la
+    - echo "Running tests..."
     - python manage.py test
 
 deploy:
