@@ -11,7 +11,7 @@ test:
   script:
     - pip install --upgrade pip
     - pip install -r requirements.txt
-    - python myblog/manage.py test
+    - python myblog/manage.py test myblog
 
 deploy:
   stage: deploy
