@@ -7,14 +7,10 @@ stages:
 test:
   stage: test
   script:
-    - |
-      python -m venv venv
-      source venv/bin/activate
-      pip install --upgrade pip
-      pip install -r requirements.txt
-      export PYTHONPATH=$PYTHONPATH:$(pwd)/myblog
-      export DJANGO_SETTINGS_MODULE=myblog.settings
-      python myblog/manage.py test
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python -c "import django; print('Django version:', django.get_version())"
+    - python myblog/manage.py test
 
 deploy:
   stage: deploy
