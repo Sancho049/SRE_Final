@@ -8,23 +8,20 @@ stages:
 build:
   stage: build
   script:
-    - echo "Installing dependencies..."
+    - python -m venv venv           # создаём виртуальное окружение
+    - source venv/bin/activate      # активируем (для bash)
+    - pip install --upgrade pip
     - pip install -r requirements.txt
 
 test:
   stage: test
   script:
-    - echo "Listing files in current directory:"
-    - ls -la
-    - echo "Trying to change directory to myblog:"
+    - source venv/bin/activate      # активируем окружение
     - cd myblog
-    - echo "Listing files in myblog directory:"
-    - ls -la
-    - echo "Running tests..."
     - python manage.py test
 
 deploy:
   stage: deploy
   script:
     - echo "Deploying application..."
-    - echo "Здесь будет логика деплоя (например, Docker или SCP)"
+    - echo "Здесь будет логика деплоя"
