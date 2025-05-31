@@ -1,0 +1,30 @@
+groups:
+  - name: django-alerts
+    rules:
+      - alert: HighRequestLatency
+        expr: avg(rate(django_http_requests_latency_including_middlewares_seconds_sum[1m]) 
+                 / rate(django_http_requests_latency_including_middlewares_seconds_count[1m])) > 0.5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Request Latency Detected"
+          description: "Average request latency has exceeded 0.5 seconds for 1 minute."
+
+      - alert: HighErrorRate
+        expr: increase(django_http_responses_total_by_status_total{status="500"}[1m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High HTTP 500 Error Rate Detected"
+          description: "More than 5 HTTP 500 errors have occurred in the last minute."
+
+      - alert: DjangoAppDown
+        expr: up{job="django-blog"} == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Django Application Down"
+          description: "The Django application is down or unreachable for 1 minute."

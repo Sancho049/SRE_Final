@@ -1,0 +1,63 @@
+{
+    "id": null,
+    "title": "Django Blog Monitoring",
+    "timezone": "browser",
+    "schemaVersion": 27,
+    "version": 1,
+    "refresh": "5s",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Request Latency (Seconds)",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(rate(django_http_requests_latency_including_middlewares_seconds_sum[1m])) / sum(rate(django_http_requests_latency_including_middlewares_seconds_count[1m]))",
+            "legendFormat": "Latency",
+            "interval": ""
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Request Count by Status",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(django_http_responses_total_by_status_total)",
+            "legendFormat": "{{status}}"
+          }
+        ],
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Garbage Collection Objects Collected",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum by (generation) (rate(python_gc_objects_collected_total[1m]))",
+            "legendFormat": "Generation {{generation}}"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 24,
+          "h": 8
+        }
+      }
+    ]
+  }
+  

@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-llgv==#*a_rbh=w-ca&_^t(@kh9q(j@8!qo-36#4obwu1&&_rh
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -78,61 +77,42 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# Database: используем in-memory SQLite для CI и файл SQLite для локальной разработки
+print("CI variable:", os.getenv('CI'))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydb',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': '44.204.33.88',
-        'PORT': '5432',
+if os.getenv('CI'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
-
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+# Static files
 STATIC_URL = 'static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ID = 1
