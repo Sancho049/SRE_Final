@@ -16,9 +16,12 @@ test:
   script:
     - pip install --upgrade pip
     - pip install -r requirements.txt
+    - export PYTHONPATH=$PYTHONPATH:$(pwd)/myblog
+    - export DJANGO_SETTINGS_MODULE=myblog.settings
     - python myblog/manage.py test
 
 deploy:
   stage: deploy
   script:
     - echo "Deploying application..."
+    - echo "Здесь будет логика деплоя"
